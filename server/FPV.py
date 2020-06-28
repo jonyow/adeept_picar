@@ -37,6 +37,8 @@ tor	= 10
 FindColorMode = 0
 WatchDogMode  = 0
 FaceTrackMode = 0
+RadarMode = 0
+
 UltraData = 3
 LED  = LED.LED()
 
@@ -235,6 +237,10 @@ class FPV:
         global FaceTrackMode
         FaceTrackMode = invar
 
+    def Radar(self, invar):
+        global RadarMode
+        RadarMode = invar
+
     def UltraData(self,invar):
         global UltraData
         UltraData = invar
@@ -401,6 +407,12 @@ class FPV:
             if FaceTrackMode:
                 #print("Running face detection..")
                 runFaceClassifer(frame_image)
+                time.sleep(0.5)
+
+            if RadarMode:
+                dist = ultra.checkdist()
+                cv2.putText(frame_image, 'Radar: ' + str(dist), (40, 410), font, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+
 
             if FindLineMode:
                 cvFindLine()

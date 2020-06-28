@@ -1,0 +1,5 @@
+opencv-python
+numpy
+zmq
+cvlib
+tensorflow

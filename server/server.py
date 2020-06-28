@@ -364,11 +364,13 @@ def run():
 			tcpCliSock.send(('Switch_1_off').encode())
 
 		elif 'Switch_2_on' in data:
-			switch.switch(2,1)
+			#switch.switch(2,1)
+			fpv.Radar(1)
 			tcpCliSock.send(('Switch_2_on').encode())
 
 		elif 'Switch_2_off' in data:
-			switch.switch(2,0)
+			#switch.switch(2,0)
+			fpv.Radar(0)
 			tcpCliSock.send(('Switch_2_off').encode())
 
 		elif 'Switch_3_on' in data:

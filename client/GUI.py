@@ -643,7 +643,7 @@ def switch_button(x,y):
 			tcpClicSock.send(('Face_Track_off').encode())
 
 	Btn_Switch_1 = tk.Button(root, width=8, text='Port 1',fg=color_text,bg=color_btn,relief='ridge')
-	Btn_Switch_2 = tk.Button(root, width=8, text='Port 2',fg=color_text,bg=color_btn,relief='ridge')
+	Btn_Switch_2 = tk.Button(root, width=8, text='Radar',fg=color_text,bg=color_btn,relief='ridge')
 	Btn_Switch_3 = tk.Button(root, width=8, text='Face Track',fg=color_text,bg=color_btn,relief='ridge')
 
 	Btn_Switch_1.place(x=x,y=y)
