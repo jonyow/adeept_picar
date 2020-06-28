@@ -630,9 +630,15 @@ def switch_button(x,y):
 		else:
 			tcpClicSock.send(('Switch_3_off').encode())
 
+	def call_Face_Tracking(event):
+		if Switch_3 == 0:
+			tcpClicSock.send(('Face_Track_on').encode())
+		else:
+			tcpClicSock.send(('Face_Track_off').encode())
+
 	Btn_Switch_1 = tk.Button(root, width=8, text='Port 1',fg=color_text,bg=color_btn,relief='ridge')
 	Btn_Switch_2 = tk.Button(root, width=8, text='Port 2',fg=color_text,bg=color_btn,relief='ridge')
-	Btn_Switch_3 = tk.Button(root, width=8, text='Port 3',fg=color_text,bg=color_btn,relief='ridge')
+	Btn_Switch_3 = tk.Button(root, width=8, text='Face Track',fg=color_text,bg=color_btn,relief='ridge')
 
 	Btn_Switch_1.place(x=x,y=y)
 	Btn_Switch_2.place(x=x+70,y=y)
@@ -640,7 +646,8 @@ def switch_button(x,y):
 
 	Btn_Switch_1.bind('<ButtonPress-1>', call_Switch_1)
 	Btn_Switch_2.bind('<ButtonPress-1>', call_Switch_2)
-	Btn_Switch_3.bind('<ButtonPress-1>', call_Switch_3)
+	#Btn_Switch_3.bind('<ButtonPress-1>', call_Switch_3)
+	Btn_Switch_3.bind('<ButtonPress-1>', call_Face_Tracking)
 
 
 def scale(x,y,w):
