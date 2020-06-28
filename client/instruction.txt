@@ -29,12 +29,12 @@ The issue of failing to go straight:
 There is an inevitable mechanical error in the car which uses servos for steering. After the assembly is completed, the servo can be fine-tuned in the GUI interface (the three scales in the lower right corner). The result of the fine adjustment will be displayed immediately. After finishing the fine adjustment,you can press Save as Default to save the setting, so that next time when booting it will automatically initialize the servo according to the new servo initial position.
 
 Features:
-RadarScan - Ultrasound radar scanning and imaging.
-FindColor - OpencCV-based color searching and tracking function.Search for yellow target by default.You can change the target color according to your needs (line 65 and 66 of (PATH) / server / FPV.py).
-MotionGet - OpenCV-based moving object detection.
-LineTrack - Tracking function.
+1: RadarScan - Ultrasound radar scanning and imaging.
+2: FindColor - OpencCV-based color searching and tracking function.Search for yellow target by default.You can change the target color according to your needs (line 65 and 66 of (PATH) / server / FPV.py).
+3: MotionGet - OpenCV-based moving object detection.
+4: LineTrack - Tracking function.
 Rainbow - LEDs Rainbow Change (source code from https://github.com/rpi-ws281x/rpi-ws281x-python) (This feature cannot be used simultaneously with speech recognition).
 Police - LEDs flash red and blue (this feature cannot be used simultaneously with speech recognition).
-Automatic - Ultrasonic-based obstacle avoidance mode.
-SteadyCam - MPU6050-based PT stabilization function.After this function is turned on, you can still control the PT movement to a certain elevation by controlling the buttons on the PT, then the PT will control the PWM2 servo to maintain the elevation through the MPU6050 degrees.
+5: Automatic - Ultrasonic-based obstacle avoidance mode.
+6: SteadyCam - MPU6050-based PT stabilization function.After this function is turned on, you can still control the PT movement to a certain elevation by controlling the buttons on the PT, then the PT will control the PWM2 servo to maintain the elevation through the MPU6050 degrees.
 The three scales of red, green and blue on the right are respectively used to control the LED color of red, green and blue,and the brightness.
