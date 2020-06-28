@@ -379,6 +379,16 @@ def run():
 			switch.switch(3,0)
 			tcpCliSock.send(('Switch_3_off').encode())
 
+		elif 'Face_Track_on' in data:
+			# functionMode = 3
+			# fpv.WatchDog(1)
+			tcpCliSock.send(('Face_Track_on').encode())
+
+		elif 'Face_Track_off' in data:
+			# functionMode = 0
+			# fpv.WatchDog(0)
+			tcpCliSock.send(('Face_Track_off').encode())
+
 
 		elif 'function_1_on' in data:
 			servo.ahead()
@@ -449,7 +459,7 @@ def run():
 			init_get = 0
 			tcpCliSock.send(('function_6_off').encode())
 
-		#elif 'function_1_off' in data:
+			#elif 'function_1_off' in data:
 		#	tcpCliSock.send(('function_1_off').encode())
 
 		elif 'lookleft' == data:

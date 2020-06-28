@@ -212,22 +212,28 @@ def connection_thread():
 		elif 'Switch_3_on' in car_info:
 			Switch_3 = 1
 			Btn_Switch_3.config(bg='#4CAF50')
-
-		elif 'Switch_2_on' in car_info:
-			Switch_2 = 1
-			Btn_Switch_2.config(bg='#4CAF50')
-
-		elif 'Switch_1_on' in car_info:
-			Switch_1 = 1
-			Btn_Switch_1.config(bg='#4CAF50')
-
 		elif 'Switch_3_off' in car_info:
 			Switch_3 = 0
 			Btn_Switch_3.config(bg=color_btn)
 
+		elif 'Face_Track_on' in car_info:
+			Switch_3 = 1
+			Btn_Switch_3.config(bg='#4CAF50')
+		elif 'Face_Track_off' in car_info:
+			Switch_3 = 0
+			Btn_Switch_3.config(bg=color_btn)
+
+
+		elif 'Switch_2_on' in car_info:
+			Switch_2 = 1
+			Btn_Switch_2.config(bg='#4CAF50')
 		elif 'Switch_2_off' in car_info:
 			Switch_2 = 0
 			Btn_Switch_2.config(bg=color_btn)
+
+		elif 'Switch_1_on' in car_info:
+			Switch_1 = 1
+			Btn_Switch_1.config(bg='#4CAF50')
 
 		elif 'Switch_1_off' in car_info:
 			Switch_1 = 0
