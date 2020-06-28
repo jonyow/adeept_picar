@@ -396,31 +396,6 @@ def run():
 			fpv.FindColor(1)
 			tcpCliSock.send(('function_2_on').encode())
 
-		elif 'function_3_on' in data:
-			functionMode = 3
-			fpv.WatchDog(1)
-			tcpCliSock.send(('function_3_on').encode())
-
-		elif 'function_4_on' in data:
-			functionMode = 4
-			servo_move.resume()
-			tcpCliSock.send(('function_4_on').encode())
-
-		elif 'function_5_on' in data:
-			functionMode = 5
-			servo_move.resume()
-			tcpCliSock.send(('function_5_on').encode())
-
-		elif 'function_6_on' in data:
-			if MPU_connection:
-				functionMode = 6
-				servo_move.resume()
-				tcpCliSock.send(('function_6_on').encode())
-
-
-		#elif 'function_1_off' in data:
-		#	tcpCliSock.send(('function_1_off').encode())
-
 		elif 'function_2_off' in data:
 			functionMode = 0
 			fpv.FindColor(0)
@@ -429,10 +404,20 @@ def run():
 			switch.switch(3,0)
 			tcpCliSock.send(('function_2_off').encode())
 
+		elif 'function_3_on' in data:
+			functionMode = 3
+			fpv.WatchDog(1)
+			tcpCliSock.send(('function_3_on').encode())
+
 		elif 'function_3_off' in data:
 			functionMode = 0
 			fpv.WatchDog(0)
 			tcpCliSock.send(('function_3_off').encode())
+
+		elif 'function_4_on' in data:
+			functionMode = 4
+			servo_move.resume()
+			tcpCliSock.send(('function_4_on').encode())
 
 		elif 'function_4_off' in data:
 			functionMode = 0
@@ -440,11 +425,22 @@ def run():
 			move.motorStop()
 			tcpCliSock.send(('function_4_off').encode())
 
+		elif 'function_5_on' in data:
+			functionMode = 5
+			servo_move.resume()
+			tcpCliSock.send(('function_5_on').encode())
+
 		elif 'function_5_off' in data:
 			functionMode = 0
 			servo_move.pause()
 			move.motorStop()
 			tcpCliSock.send(('function_5_off').encode())
+
+		elif 'function_6_on' in data:
+			if MPU_connection:
+				functionMode = 6
+				servo_move.resume()
+				tcpCliSock.send(('function_6_on').encode())
 
 		elif 'function_6_off' in data:
 			functionMode = 0
@@ -453,6 +449,8 @@ def run():
 			init_get = 0
 			tcpCliSock.send(('function_6_off').encode())
 
+		#elif 'function_1_off' in data:
+		#	tcpCliSock.send(('function_1_off').encode())
 
 		elif 'lookleft' == data:
 			servo_command = 'lookleft'
