@@ -381,12 +381,12 @@ def run():
 
 		elif 'Face_Track_on' in data:
 			# functionMode = 3
-			# fpv.WatchDog(1)
+			fpv.FaceTrack(1)
 			tcpCliSock.send(('Face_Track_on').encode())
 
 		elif 'Face_Track_off' in data:
 			# functionMode = 0
-			# fpv.WatchDog(0)
+			fpv.FaceTrack(0)
 			tcpCliSock.send(('Face_Track_off').encode())
 
 
