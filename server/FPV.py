@@ -26,6 +26,9 @@ import move
 import switch
 import ultra
 import numpy as np
+import cvlib
+from cvlib.object_detection import draw_bbox
+import random
 
 pid = PID.PID()
 pid.SetKp(0.5)
@@ -41,6 +44,12 @@ RadarMode = 0
 
 UltraData = 3
 LED  = LED.LED()
+
+useTiny=True
+useGPU=False
+yoloConfidence=0.3
+
+cvCache = None
 
 CVrun = 1
 speed_set = 90
@@ -78,6 +87,26 @@ def runFaceClassifer(img):
     #re_img = cv2.resize(img, (img_width, int(img.shape[0]/ img.shape[1] * img_width)) )
 
     return img, len(faces)
+
+def runObjectClassifier(img):
+    global cvCache
+
+    if useTiny:
+        model = 'yolov3-tiny'
+    else:
+        model = ''
+
+    # only run detection on 1 in X frames for performance
+    if random.randint(1, 3) == 1 or cvCache is None:
+        cvCache = cvlib.detect_common_objects(img,
+                                            model=model,
+                                            enable_gpu=useGPU,
+                                            confidence=yoloConfidence)
+
+    bbox, label, conf = cvCache
+    img = draw_bbox(img, bbox, label, conf, write_conf=True)
+
+    return img, len(label)
 
 def findLineCtrl(posInput, setCenter):
     if posInput:
@@ -276,6 +305,7 @@ class FPV:
 
         context = zmq.Context()
         footage_socket = context.socket(zmq.PUB)
+        footage_socket.set_hwm(1)
         print(IPinver)
         footage_socket.connect('tcp://%s:5555'%IPinver)
 
@@ -406,8 +436,11 @@ class FPV:
 
             if FaceTrackMode:
                 #print("Running face detection..")
-                runFaceClassifer(frame_image)
-                time.sleep(0.5)
+                #runFaceClassifer(frame_image)
+
+                runObjectClassifier(frame_image)
+
+                #time.sleep(0.1)
 
             if RadarMode:
                 dist = ultra.checkdist()

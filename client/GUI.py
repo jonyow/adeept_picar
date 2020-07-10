@@ -13,13 +13,15 @@ import threading as thread
 import tkinter as tk
 import math
 import os
+import opencv_detection
 
 #try:
 import cv2
 import zmq
 import base64
 import numpy as np
-	
+
+
 # except:
 # 	print("Couldn't import OpenCV, you need to install it first.")
 
@@ -78,8 +80,11 @@ def rgb2hsv(r, g, b):
 
 def video_thread():
 	global footage_socket, font, frame_num, fps
+	print("Starting video thread...")
 	context = zmq.Context()
 	footage_socket = context.socket(zmq.SUB)
+	footage_socket.set_hwm(1)
+
 	footage_socket.bind('tcp://*:5555')
 	footage_socket.setsockopt_string(zmq.SUBSCRIBE, np.unicode(''))
 
@@ -146,6 +151,7 @@ def opencv_r():
 				elif DIR_show < 0:
 					cv2.rectangle(source, (320, 323), ((320-DIR_show), 327), (255,255,255))
 
+				opencv_detection.runObjectClassifier(source)
 
 				#cv2.line(source,(320,240),(260,300),(255,255,255),1)
 				#cv2.line(source,(210,300),(260,300),(255,255,255),1)
