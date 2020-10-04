@@ -7,8 +7,8 @@ import random
 face_cascade = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
 
 useTiny=False
-useGPU=True
-yoloConfidence=0.2
+useGPU=False
+yoloConfidence=0.3
 
 
 

@@ -20,7 +20,7 @@ import cv2
 import zmq
 import base64
 import numpy as np
-
+import datetime
 
 # except:
 # 	print("Couldn't import OpenCV, you need to install it first.")
@@ -84,6 +84,7 @@ def video_thread():
 	context = zmq.Context()
 	footage_socket = context.socket(zmq.SUB)
 	footage_socket.set_hwm(1)
+	footage_socket.setsockopt(zmq.CONFLATE, 1)
 
 	footage_socket.bind('tcp://*:5555')
 	footage_socket.setsockopt_string(zmq.SUBSCRIBE, np.unicode(''))
@@ -151,7 +152,13 @@ def opencv_r():
 				elif DIR_show < 0:
 					cv2.rectangle(source, (320, 323), ((320-DIR_show), 327), (255,255,255))
 
+				# print("---------")
+				# start = datetime.datetime.now()
+				# print("Start: " + str(start))
 				opencv_detection.runObjectClassifier(source)
+				# print("End: " + str(datetime.datetime.now()))
+				# print("delta: " + str(datetime.datetime.now() - start))
+
 
 				#cv2.line(source,(320,240),(260,300),(255,255,255),1)
 				#cv2.line(source,(210,300),(260,300),(255,255,255),1)
