@@ -3,3 +3,4 @@ client/.vscode/
 server/__pycache__/
 server/.idea/
 *.pyc
+*.h5

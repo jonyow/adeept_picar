@@ -1,3 +1,5 @@
 opencv-python
 numpy
 zmq
+cvlib==0.2.5
+Pillow==7.1.2

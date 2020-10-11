@@ -97,7 +97,7 @@ def runObjectClassifier(img):
         model = ''
 
     # only run detection on 1 in X frames for performance
-    if random.randint(1, 3) == 1 or cvCache is None:
+    if random.randint(1, 5) == 1 or cvCache is None:
         cvCache = cvlib.detect_common_objects(img,
                                             model=model,
                                             enable_gpu=useGPU,
