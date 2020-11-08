@@ -17,6 +17,7 @@ import imutils
 from collections import deque
 import psutil
 import os
+
 import servo
 import PID
 import LED
@@ -29,6 +30,9 @@ import numpy as np
 import cvlib
 from cvlib.object_detection import draw_bbox
 import random
+import datetime
+
+lastSound = datetime.datetime.now()
 
 pid = PID.PID()
 pid.SetKp(0.5)
@@ -41,6 +45,9 @@ FindColorMode = 0
 WatchDogMode  = 0
 FaceTrackMode = 0
 RadarMode = 0
+HaarJJMode = 0
+SoundsMode = 0
+
 
 UltraData = 3
 LED  = LED.LED()
@@ -274,6 +281,13 @@ class FPV:
         global UltraData
         UltraData = invar
 
+    def HaarJJ(self,invar):
+        global HaarJJMode
+        HaarJJMode = invar
+
+    def Sounds(self,invar):
+        global SoundsMode
+        SoundsMode = invar
 
     def setExpCom(self,invar):#Z
         if invar > 25:
@@ -435,17 +449,18 @@ class FPV:
                     switch.switch(3,0)
 
             if FaceTrackMode:
-                #print("Running face detection..")
                 #runFaceClassifer(frame_image)
-
                 runObjectClassifier(frame_image)
-
-                #time.sleep(0.1)
+            elif HaarJJMode:
+                import custom_haar_detector
+                if SoundsMode:
+                    frame_image = custom_haar_detector.run_detector(frame_image, play_sound=True, sound_min_gap_secs=10)
+                else:
+                    frame_image = custom_haar_detector.run_detector(frame_image)
 
             if RadarMode:
                 dist = ultra.checkdist()
                 cv2.putText(frame_image, 'Radar: ' + str(dist), (40, 410), font, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
-
 
             if FindLineMode:
                 cvFindLine()

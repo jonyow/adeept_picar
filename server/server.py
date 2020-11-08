@@ -361,11 +361,11 @@ def run():
 
 
         elif 'Switch_1_on' in data:
-            switch.switch(1,1)
+            fpv.Sounds(1)
             tcpCliSock.send(('Switch_1_on').encode())
 
         elif 'Switch_1_off' in data:
-            switch.switch(1,0)
+            fpv.Sounds(0)
             tcpCliSock.send(('Switch_1_off').encode())
 
         elif 'Switch_2_on' in data:
@@ -386,6 +386,24 @@ def run():
             switch.switch(3,0)
             tcpCliSock.send(('Switch_3_off').encode())
 
+        elif 'Switch_A_on' in data:
+            tcpCliSock.send(('Switch_A_on').encode())
+        elif 'Switch_A_off' in data:
+            tcpCliSock.send(('Switch_A_off').encode())
+
+        elif 'Switch_B_on' in data:
+            tcpCliSock.send(('Switch_B_on').encode())
+        elif 'Switch_B_off' in data:
+            tcpCliSock.send(('Switch_B_off').encode())
+
+        elif 'Switch_C_on' in data:
+            fpv.HaarJJ(1)
+            tcpCliSock.send(('Switch_C_on').encode())
+        elif 'Switch_C_off' in data:
+            fpv.HaarJJ(0)
+            tcpCliSock.send(('Switch_C_off').encode())
+
+
         elif 'Face_Track_on' in data:
             # functionMode = 3
             fpv.FaceTrack(1)
@@ -395,7 +413,6 @@ def run():
             # functionMode = 0
             fpv.FaceTrack(0)
             tcpCliSock.send(('Face_Track_off').encode())
-
 
         elif 'function_1_on' in data:
             servo.ahead()

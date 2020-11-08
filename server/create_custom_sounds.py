@@ -19,16 +19,16 @@ def play_person_spotted(name):
             speech = gTTS(text=text, lang=language, slow=False)
         except:
             print('Error creating sound')
-            return None
+            return False
         try:
             speech.save(filename)
         except ValueError:
             print('Error saving sound')
             os.remove(filename)
-            return None
+            return False
 
     mixer.music.load(filename)
     mixer.music.play()
 
-    return None
+    return True
 

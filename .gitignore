@@ -4,3 +4,4 @@ server/__pycache__/
 server/.idea/
 *.pyc
 *.h5
+server/custom_haar_files/trainer.yml

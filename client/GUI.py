@@ -13,7 +13,7 @@ import threading as thread
 import tkinter as tk
 import math
 import os
-import opencv_detection
+#import opencv_detection
 
 #try:
 import cv2
@@ -29,6 +29,7 @@ import datetime
 def global_init():
 	global DS_stu, TS_stu, color_bg, color_text, color_btn, color_line, color_can, color_oval, target_color
 	global speed, ip_stu, Switch_3, Switch_2, Switch_1, servo_stu, function_stu
+	global Switch_A, Switch_B, Switch_C
 	DS_stu = 0
 	TS_stu = 0
 
@@ -45,6 +46,10 @@ def global_init():
 	Switch_3 = 0
 	Switch_2 = 0
 	Switch_1 = 0
+
+	Switch_A = 0
+	Switch_B = 0
+	Switch_C = 0
 
 	servo_stu = 0
 	function_stu = 0
@@ -155,8 +160,15 @@ def opencv_r():
 				# print("---------")
 				# start = datetime.datetime.now()
 				# print("Start: " + str(start))
-				opencv_detection.runObjectClassifier(source)
-				# print("End: " + str(datetime.datetime.now()))
+				if Switch_A == 1:
+					import opencv_detection
+					opencv_detection.runObjectClassifier(source)
+				elif Switch_B == 1:
+					import jj_detector_keras
+					source = jj_detector_keras.runJJDetector(source)
+
+
+			# print("End: " + str(datetime.datetime.now()))
 				# print("delta: " + str(datetime.datetime.now() - start))
 
 
@@ -171,9 +183,9 @@ def opencv_r():
 			cv2.imshow("Stream", source)
 			cv2.setMouseCallback("Stream", getposBgr)
 
-			HSVimg = cv2.cvtColor(source, cv2.COLOR_BGR2HSV)
-			cv2.imshow("StreamHSV", HSVimg)
-			cv2.setMouseCallback("StreamHSV", getposHsv)
+			# HSVimg = cv2.cvtColor(source, cv2.COLOR_BGR2HSV)
+			# cv2.imshow("StreamHSV", HSVimg)
+			# cv2.setMouseCallback("StreamHSV", getposHsv)
 			
 			frame_num += 1
 			cv2.waitKey(1)
@@ -218,10 +230,32 @@ def num_import(initial):			#Call this function to import data from '.txt' file
 
 def connection_thread():
 	global Switch_3, Switch_2, Switch_1, function_stu
+	global Switch_A, Switch_B, Switch_C
+
 	while 1:
 		car_info = (tcpClicSock.recv(BUFSIZ)).decode()
 		if not car_info:
 			continue
+		elif 'Switch_A_on' in car_info:
+			Switch_A = 1
+			Btn_Switch_A.config(bg='#4CAF50')
+		elif 'Switch_A_off' in car_info:
+			Switch_A = 0
+			Btn_Switch_A.config(bg=color_btn)
+		elif 'Switch_B_on' in car_info:
+			Switch_B = 1
+			Btn_Switch_B.config(bg='#4CAF50')
+		elif 'Switch_B_off' in car_info:
+			Switch_B = 0
+			Btn_Switch_B.config(bg=color_btn)
+		elif 'Switch_C_on' in car_info:
+			Switch_C = 1
+			Btn_Switch_C.config(bg='#4CAF50')
+		elif 'Switch_C_off' in car_info:
+			Switch_C = 0
+			Btn_Switch_C.config(bg=color_btn)
+
+
 		elif 'Switch_3_on' in car_info:
 			Switch_3 = 1
 			Btn_Switch_3.config(bg='#4CAF50')
@@ -515,7 +549,7 @@ def servo_buttons(x,y):
 	Btn_SR = tk.Button(root, width=8, text='CV Run',fg=color_text,bg=color_btn,relief='ridge')
 	Btn_SR.place(x=x,y=y)
 	Btn_SR.bind('<ButtonPress-1>', call_CVrun)
-	root.bind('<KeyPress-u>', call_CVrun) 
+	#root.bind('<KeyPress-u>', call_CVrun)
 
 	Btn_Police = tk.Button(root, width=8, text='Police',fg=color_text,bg=color_btn,relief='ridge')
 	Btn_Police.place(x=x,y=y-55)
@@ -531,18 +565,6 @@ def servo_buttons(x,y):
 
 
 def motor_buttons(x,y):
-	def call_left(event):
-		global TS_stu
-		if TS_stu == 0:
-			tcpClicSock.send(('left').encode())
-			TS_stu = 1
-
-	def call_right(event):
-		global TS_stu
-		if TS_stu == 0:
-			tcpClicSock.send(('right').encode())
-			TS_stu = 1
-
 	def call_forward(event):
 		global DS_stu
 		if DS_stu == 0:
@@ -554,6 +576,21 @@ def motor_buttons(x,y):
 		if DS_stu == 0:
 			tcpClicSock.send(('backward').encode())
 			DS_stu = 1
+
+
+	def call_left(event):
+		global TS_stu
+		if TS_stu == 0:
+			tcpClicSock.send(('left').encode())
+			TS_stu = 1
+
+
+	def call_right(event):
+		global TS_stu
+		if TS_stu == 0:
+			tcpClicSock.send(('right').encode())
+			TS_stu = 1
+
 
 	def call_DS(event):
 		global DS_stu
@@ -643,11 +680,11 @@ def switch_button(x,y):
 			tcpClicSock.send(('Switch_2_off').encode())
 
 
-	def call_Switch_3(event):
-		if Switch_3 == 0:
-			tcpClicSock.send(('Switch_3_on').encode())
-		else:
-			tcpClicSock.send(('Switch_3_off').encode())
+	# def call_Switch_3(event):
+	# 	if Switch_3 == 0:
+	# 		tcpClicSock.send(('Switch_3_on').encode())
+	# 	else:
+	# 		tcpClicSock.send(('Switch_3_off').encode())
 
 	def call_Face_Tracking(event):
 		if Switch_3 == 0:
@@ -655,9 +692,9 @@ def switch_button(x,y):
 		else:
 			tcpClicSock.send(('Face_Track_off').encode())
 
-	Btn_Switch_1 = tk.Button(root, width=8, text='Port 1',fg=color_text,bg=color_btn,relief='ridge')
+	Btn_Switch_1 = tk.Button(root, width=8, text='Sounds',fg=color_text,bg=color_btn,relief='ridge')
 	Btn_Switch_2 = tk.Button(root, width=8, text='Radar',fg=color_text,bg=color_btn,relief='ridge')
-	Btn_Switch_3 = tk.Button(root, width=8, text='Face Track',fg=color_text,bg=color_btn,relief='ridge')
+	Btn_Switch_3 = tk.Button(root, width=8, text='Port 3',fg=color_text,bg=color_btn,relief='ridge')
 
 	Btn_Switch_1.place(x=x,y=y)
 	Btn_Switch_2.place(x=x+70,y=y)
@@ -668,6 +705,44 @@ def switch_button(x,y):
 	#Btn_Switch_3.bind('<ButtonPress-1>', call_Switch_3)
 	Btn_Switch_3.bind('<ButtonPress-1>', call_Face_Tracking)
 
+	global Btn_Switch_A, Btn_Switch_B, Btn_Switch_C
+
+	def call_Switch_A(event):
+		if Switch_A == 0:
+			tcpClicSock.send(('Switch_A_on').encode())
+		else:
+			tcpClicSock.send(('Switch_A_off').encode())
+
+	def call_Switch_B(event):
+		if Switch_B == 0:
+			tcpClicSock.send(('Switch_B_on').encode())
+		else:
+			tcpClicSock.send(('Switch_B_off').encode())
+
+	def call_Switch_C(event):
+		if Switch_C == 0:
+			tcpClicSock.send(('Switch_C_on').encode())
+		else:
+			tcpClicSock.send(('Switch_C_off').encode())
+
+	Btn_Switch_A = tk.Button(root, width=12, text='Obj Detect (PC)', fg=color_text, bg=color_btn, relief='ridge')
+	Btn_Switch_B = tk.Button(root, width=12, text='YOLO JJ (PC)', fg=color_text, bg=color_btn, relief='ridge')
+	Btn_Switch_C = tk.Button(root, width=12, text='Haar JJ (Pi)', fg=color_text, bg=color_btn, relief='ridge')
+
+	x_2 = 550
+	y_2 = 15
+	y_delta = 35
+	Btn_Switch_A.place(x=x_2, y=y_2)
+	Btn_Switch_B.place(x=x_2, y=y_2 + y_delta*1)
+	Btn_Switch_C.place(x=x_2, y=y_2 + y_delta*2)
+
+	Btn_Switch_A.bind('<ButtonPress-1>', call_Switch_A)
+	Btn_Switch_B.bind('<ButtonPress-1>', call_Switch_B)
+	Btn_Switch_C.bind('<ButtonPress-1>', call_Switch_C)
+
+	root.bind('<KeyPress-1>', call_Switch_A)
+	root.bind('<KeyPress-2>', call_Switch_B)
+	root.bind('<KeyPress-3>', call_Switch_C)
 
 def scale(x,y,w):
 	def speed_send(event):
@@ -981,6 +1056,13 @@ def function_buttons(x,y):
 		else:
 			tcpClicSock.send(('function_6_off').encode())
 
+	def call_function_A(event):
+		if function_stu == 0:
+			tcpClicSock.send(('function_A_on').encode())
+		else:
+			tcpClicSock.send(('function_A_off').encode())
+
+
 	def call_function_7(event):
 		os.system('%s\\instruction.txt'%sys.path[0])
 		# if function_stu == 0:
@@ -1017,7 +1099,7 @@ def loop():
 	global root, var_Speed, var_R_L, var_G_L, var_B_L, var_0, var_1, var_2, var_lip1, var_lip2, var_err, var_R, var_G, var_B, var_ec
 	root = tk.Tk()			
 	root.title('PiCar-B v2.0 GUI')	  
-	root.geometry('565x850')  
+	root.geometry('650x850')
 	root.config(bg=color_bg)  
 
 	var_Speed = tk.StringVar()
