@@ -8,7 +8,7 @@ mixer.init()
 CACHE_FOLDER = '../sounds/'
 language = 'en'
 
-def play_person_spotted(name):
+def play_person_spotted(name, volume = 0.3):
     if not os.path.exists(CACHE_FOLDER):
         os.makedirs(CACHE_FOLDER)
 
@@ -26,8 +26,9 @@ def play_person_spotted(name):
             print('Error saving sound')
             os.remove(filename)
             return False
-
+    mixer.music.set_volume(volume)
     mixer.music.load(filename)
+    print("playing sound: " + name)
     mixer.music.play()
 
     return True
