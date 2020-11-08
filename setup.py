@@ -117,9 +117,9 @@ for x in range(1,4):
 #replace_num('/etc/rc.local','fi','fi\n//home/pi/startup.sh start')
 
 try: #fix conflict with onboard Raspberry Pi audio
-	os.system('sudo touch /etc/modprobe.d/snd-blacklist.conf')
-	with open("/etc/modprobe.d/snd-blacklist.conf",'w') as file_to_write:
-		file_to_write.write("blacklist snd_bcm2835")
+#	os.system('sudo touch /etc/modprobe.d/snd-blacklist.conf')
+#	with open("/etc/modprobe.d/snd-blacklist.conf",'w') as file_to_write:
+#		file_to_write.write("blacklist snd_bcm2835")
 except:
 	pass
 
